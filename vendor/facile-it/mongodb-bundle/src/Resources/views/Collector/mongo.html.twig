@@ -1,0 +1,330 @@
+{% extends app.request.isXmlHttpRequest ? '@WebProfiler/Profiler/ajax_layout.html.twig' : '@WebProfiler/Profiler/layout.html.twig' %}
+{# collector \Facile\MongoDbBundle\DataCollector\MongoDbDataCollector #}
+{% block toolbar %}
+    {% set icon %}
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkQ2RDUyNEY5ODY3NDExRTZCQzk5Q0Q0RkExMzNFNjM0IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkQ2RDUyNEZBODY3NDExRTZCQzk5Q0Q0RkExMzNFNjM0Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RDZENTI0Rjc4Njc0MTFFNkJDOTlDRDRGQTEzM0U2MzQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RDZENTI0Rjg4Njc0MTFFNkJDOTlDRDRGQTEzM0U2MzQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz405b19AAACFUlEQVR42qRVvUrDUBS+TdOkTRsItLVFCg51EVyCi86dfAXBoYOCjv7MPoSTsxR0cRAVn6Cg4AuIi0WcJLSlP2nTNn6n5EoIbVJvD1zSnpOc7zs/95yY67osTLg9FovN/R0m8jyD4zisXq+z4XA4dTKZTJimaVvQf45Gox/S4ckKhQIzTfP/AOSw2WyywWAwZZtKpcxsNvvQ6XRqrVbrTJKkKQnoQyOQ5hmIIT9wsl4qlZ4SiURR1/VTnGPSx+NxRkBCAD4gJZ/PX8NZkaIiAcBlMpmsLFIDKarAmUzmQFXV7fF4PP3vFVeC/grs9agmkcKcg7UGtuecud8my3IZqTtcCgDMK3C0xpkHD+xHiEIVThEc7HKwIFMvwjIKvyPcRfjY9Dvmvzmg905FCAChp3BWZ6XGD4IUboimKAmGmt9hMEJPZ4gCOHDgBFMzI10j0S7qove//emYlSq08JcogItZU4+6qSDxKtym/X6/xi9ZkLnH3sa0fRYGwMcvmKaPvKD+WpAOthuM7IbwPSBpt9snYNr2g3j7wbJt+0J42HG2qMM79kKVVHx8U3Z6vV4V+W9ETePICOgJZ3eWZe3j4tm4uV3IHtJzzxYQeZGXCAROa+l0ehPzR0Lxb6MWTSQApYg6iPYA38nI+ZuiKAbfDfQMjvKFAYhhLpf7W/rkELvhAxN2hZySnQAMwwiPPmphLCu/AgwAWTN/FN4zchIAAAAASUVORK5CYII=">
+        <span class="sf-toolbar-value">{{ collector.queryCount }}</span>
+        <span class="sf-toolbar-label">in</span>
+        <span class="sf-toolbar-value">{{ "%.2f"|format(collector.time) }}</span>
+        <span class="sf-toolbar-label">ms</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Connections</b>
+            <span class="sf-toolbar-status {{ collector.connectionsCount > 5 ? 'sf-toolbar-status-yellow' : '' }}">{{ collector.connectionsCount }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Database Queries</b>
+            <span class="sf-toolbar-status {{ collector.queryCount > 50 ? 'sf-toolbar-status-yellow' : '' }}">{{ collector.queryCount }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Query time</b>
+            <span class="sf-toolbar-status {{ collector.time > 30 ? 'sf-toolbar-status-yellow' : '' }}">{{ "%.2f"|format(collector.time) }}
+                ms</span>
+        </div>
+    {% endset %}
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': true }) }}
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        table.query-profiler tr td {
+            word-break: keep-all;
+            font-family: monospace;
+            font-size: 13px;
+            font-size-adjust: 0.5;
+        }
+
+        table.query-profiler ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        table.query-profiler ul li {
+            margin: 0;
+        }
+
+        table.query-profiler ul li:nth-child(even) {
+            margin-bottom: 5px;
+        }
+
+        table.query-profiler #query-number {
+            width: 20px;
+        }
+
+        table.query-profiler #query-info {
+            width: 150px;
+        }
+
+        table.query-profiler #query-time {
+            width: 60px;
+        }
+
+        .query-data > span {
+            display: inline-block;
+            width: 745px;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+        }
+
+        pre {
+            outline: 1px solid #ccc;
+            background: #f5f5f5 none repeat scroll 0 0;
+            margin: 0.5em 0;
+            padding: 1em;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .string {
+            color: darkorange;
+        }
+
+        .number {
+            color: blue;
+        }
+
+        .boolean {
+            color: red;
+        }
+
+        .null {
+            color: mediumvioletred;
+        }
+
+        .key {
+            color: darkolivegreen;
+        }
+
+        .small-font {
+            font-size: 10px;
+        }
+
+        .bold-font {
+            font-weight: bold;
+        }
+
+        .time-warning {
+            color: orangered;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block menu %}
+    <span class="label {{ collector.querycount == 0 ? 'disabled' }}">
+        <span class="icon">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkQ2RDUyNEY5ODY3NDExRTZCQzk5Q0Q0RkExMzNFNjM0IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkQ2RDUyNEZBODY3NDExRTZCQzk5Q0Q0RkExMzNFNjM0Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RDZENTI0Rjc4Njc0MTFFNkJDOTlDRDRGQTEzM0U2MzQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RDZENTI0Rjg4Njc0MTFFNkJDOTlDRDRGQTEzM0U2MzQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz405b19AAACFUlEQVR42qRVvUrDUBS+TdOkTRsItLVFCg51EVyCi86dfAXBoYOCjv7MPoSTsxR0cRAVn6Cg4AuIi0WcJLSlP2nTNn6n5EoIbVJvD1zSnpOc7zs/95yY67osTLg9FovN/R0m8jyD4zisXq+z4XA4dTKZTJimaVvQf45Gox/S4ckKhQIzTfP/AOSw2WyywWAwZZtKpcxsNvvQ6XRqrVbrTJKkKQnoQyOQ5hmIIT9wsl4qlZ4SiURR1/VTnGPSx+NxRkBCAD4gJZ/PX8NZkaIiAcBlMpmsLFIDKarAmUzmQFXV7fF4PP3vFVeC/grs9agmkcKcg7UGtuecud8my3IZqTtcCgDMK3C0xpkHD+xHiEIVThEc7HKwIFMvwjIKvyPcRfjY9Dvmvzmg905FCAChp3BWZ6XGD4IUboimKAmGmt9hMEJPZ4gCOHDgBFMzI10j0S7qove//emYlSq08JcogItZU4+6qSDxKtym/X6/xi9ZkLnH3sa0fRYGwMcvmKaPvKD+WpAOthuM7IbwPSBpt9snYNr2g3j7wbJt+0J42HG2qMM79kKVVHx8U3Z6vV4V+W9ETePICOgJZ3eWZe3j4tm4uV3IHtJzzxYQeZGXCAROa+l0ehPzR0Lxb6MWTSQApYg6iPYA38nI+ZuiKAbfDfQMjvKFAYhhLpf7W/rkELvhAxN2hZySnQAMwwiPPmphLCu/AgwAWTN/FN4zchIAAAAASUVORK5CYII=">
+        </span>
+        <strong>Mongo DB</strong>
+        {% if collector.queryCount > 0 %}
+            <span class="count">
+                <span>{{ collector.queryCount }}</span>
+            </span>
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block panel %}
+    {% if 'explain' == page %}
+        {{ render(controller('Facile\\MongoDbBundle\\Controller\\ProfilerController::explainAction', {
+            token: token,
+            panel: 'mongodb',
+            queryNumber: app.request.query.get('queryNumber')
+        })) }}
+    {% else %}
+        {{ block('queries') }}
+    {% endif %}
+{% endblock panel %}
+
+{% block queries %}
+    {# Optional, for showing the most details. #}
+    <h2>Mongo DB Query Metrics</h2>
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.connectionsCount }}</span>
+            <span class="label">Connections</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.queryCount }}</span>
+            <span class="label">Queries</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ "%.2f"|format(collector.time) }} ms</span>
+            <span class="label">Time</span>
+        </div>
+    </div>
+    <h2>Connections list</h2>
+    <table class="query-profiler">
+        <thead>
+        <tr>
+            <th width="5%">#</th>
+            <th width="95%">Connection</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for c in collector.connections %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ c }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">No connections</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h2>Queries Details</h2>
+    <table class="query-profiler">
+        <thead>
+        <tr>
+            <th id="query-number">#</th>
+            <th id="query-info">Info</th>
+            <th id="query-data">Data</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for q in collector.queries %}
+            {# q \Facile\MongoDbBundle\Models\Query #}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <div>
+                        <ul>
+                            <li><span class="bold-font">Method:</span></li>
+                            <li>{{ q.method }}</li>
+                            <li><span class="bold-font">Read preference:</span></li>
+                            <li>{{ q.readPreference }}</li>
+                            <li><span class="bold-font">Database:</span></li>
+                            <li>
+                                {{ q.database|length > 16 ? q.database|slice(0,16)~'...' : q.database }}
+                            </li>
+                            <li><span class="bold-font">Collection:</span></li>
+                            <li title="{{ q.collection }}">
+                                {{ q.collection|length > 16 ? q.collection|slice(0,16)~'...' : q.collection }}
+                            </li>
+                            <li><span class="bold-font">Execution time:</span></li>
+                            <li class="{{ q.executionTime * 1000 > 100.0 ? 'time-warning' : '' }}">
+                                {{ "%.2f"|format(q.executionTime * 1000) }} ms
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    {% if q.filters | length > 0 %}
+                        <div class="query-data">
+                            <span class="bold-font">Filters: </span>
+                            <a href="#!" class="link-inverse"
+                               onclick="facileMongoDbBundleClick(this, 'facile-mongodb-filters{{ loop.index }}');">Expand</a>
+                            <br/>
+                            <span id="facile-mongodb-filters{{ loop.index }}">{{ q.filters|json_encode(128) }}</span>
+                        </div>
+                        <div id="facile-mongodb-filters{{ loop.index }}-expand"></div>
+                    {% endif %}
+                    {% if q.data | length > 0 %}
+                        <div class="query-data">
+                            <span class="bold-font">{{ dataLabelTranslate('Data', q.method) }}: </span>
+                            <a href="#!" class="link-inverse"
+                               onclick="facileMongoDbBundleClick(this, 'facile-mongodb-data{{ loop.index }}');">Expand</a>
+                            <br/>
+                            <span id="facile-mongodb-data{{ loop.index }}">{{ q.data|json_encode(128) }}</span>
+                        </div>
+                        <div id="facile-mongodb-data{{ loop.index }}-expand"></div>
+                    {% endif %}
+                    {% if q.options | length > 0 %}
+                        <div class="query-data">
+                            <span class="bold-font">Options: </span>
+                            <a href="#!" class="link-inverse"
+                               onclick="facileMongoDbBundleClick(this, 'facile-mongodb-options{{ loop.index }}');">Expand</a>
+                            <br/>
+                            <span id="facile-mongodb-options{{ loop.index }}">{{ q.options|json_encode(128) }}</span>
+                        </div>
+                        <div id="facile-mongodb-options{{ loop.index }}-expand"></div>
+                    {% endif %}
+                    {% if isQueryExplainable(q.method) %}
+                        <div class="text-small font-normal">
+                            <a class="link-inverse" data-index="{{ loop.index0 }}" onclick="doExplainQuery(this)"
+                               href="#!"
+                               data-link="{{ path('_profiler', { panel: 'mongodb', token: token, page: 'explain', queryNumber: loop.index0 }) }}"
+                            >Explain query</a>
+                        </div>
+                    {% endif %}
+                    <div id="facile-mongodb-explain-{{ loop.index0 }}-expand" class="hidden"></div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No queries</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+
+        var facileMongoDbBundleClick = function (caller, elementId) {
+            var query = document.getElementById(elementId).innerHTML;
+            query = JSON.stringify(JSON.parse(query), undefined, 4);
+            var expand = '';
+            if ('Expand' == caller.innerHTML) {
+                expand = '<pre>' + facileMongoDbBundlePrettify(query) + '</pre>';
+            }
+            document.getElementById(elementId + '-expand').innerHTML = expand;
+            caller.innerHTML = 'Expand' == caller.innerHTML ? 'Collapse' : 'Expand';
+        };
+
+        var facileMongoDbBundlePrettify = function (query) {
+            query = query.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"ISODate\(\\"(.*)\\"\)"/g, 'ISODate("$1")');
+            return query.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cssClass = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cssClass = 'key';
+                    } else {
+                        cssClass = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cssClass = 'boolean';
+                } else if (/null/.test(match)) {
+                    cssClass = 'null';
+                }
+                return '<span class="' + cssClass + '">' + match + '</span>';
+            });
+        }
+
+        var doExplainQuery = function (el) {
+            var elId = 'facile-mongodb-explain-' + el.getAttribute('data-index') + '-expand';
+            var target = document.getElementById(elId);
+
+            Sfjs.load(
+                elId,
+                el.getAttribute('data-link'),
+                function (response) {
+                    var explain = JSON.stringify(JSON.parse(response.responseText), undefined, 4);
+                    target.innerHTML = '<pre>' + facileMongoDbBundlePrettify(explain) + '</pre>';
+                },
+                function (xhr, el) {
+                    document.getElementById(elId).innerHTML = 'An error occurred while loading the query explanation.';
+                }
+            );
+
+            if (target.classList.contains('hidden')) {
+                el.innerHTML = 'Close explain';
+                target.classList.remove('hidden');
+
+                return;
+            }
+
+            el.innerHTML = 'Explain query';
+            target.classList.add('hidden');
+        };
+    </script>
+
+{% endblock %}

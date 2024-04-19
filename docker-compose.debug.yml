@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  galaxygarageparis:
+    image: galaxygarageparis
+    build:
+      context: .
+      dockerfile: ./Dockerfile

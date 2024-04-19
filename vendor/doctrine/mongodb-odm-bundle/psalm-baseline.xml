@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="5.18.0@b113f3ed0259fd6e212d87c3df80eec95a6abf19">
+  <file src="config/value_resolver.php">
+    <UndefinedClass>
+      <code>ExpressionLanguage</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Command/LoadDataFixturesDoctrineODMCommand.php">
+    <UndefinedInterfaceMethod>
+      <code>ask</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/DependencyInjection/Configuration.php">
+    <UndefinedInterfaceMethod>
+      <code>arrayNode</code>
+      <code>end</code>
+      <code>scalarNode</code>
+      <code>scalarNode</code>
+    </UndefinedInterfaceMethod>
+    <UndefinedMethod>
+      <code>children</code>
+    </UndefinedMethod>
+  </file>
+  <file src="tests/Form/Type/GuesserTestType.php">
+    <MissingTemplateParam>
+      <code>GuesserTestType</code>
+    </MissingTemplateParam>
+  </file>
+</files>
